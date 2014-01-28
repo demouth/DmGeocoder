@@ -3,10 +3,11 @@
 PHP製のジオコーディングライブラリです。  
 住所から緯度経度を調べたり（ジオコーディング）、緯度経度から住所を調べたりすること（逆ジオコーディング）が可能です。
 
-###使い方
+##使い方
 
-- 住所名から緯度経度を取得する
-  - 住所文字列をDm_Geocoder::geocode()の第一引数に渡すと、引数を元にもっとも一致する住所検索を行い、詳細な住所情報を返します。
+#####住所名から緯度経度を取得する
+
+住所文字列をDm_Geocoder::geocode()の第一引数に渡すと、引数を元にもっとも一致する住所検索を行い、詳細な住所情報を返します。
 ```php
 $addresses = Dm_Geocoder::geocode('沖縄県八重山郡与那国町与那国');
 echo count($addresses); // 1 (この場合は1)
@@ -21,7 +22,8 @@ echo $address->prefectureCode; // 47 (都道府県コード)
 echo $address->municipalityCode; // 47382 (市区町村コード)
 echo $address->localCode; // 473820001000 (大字町丁目コード)
 ```
-  - 検索結果が複数件存在した場合、より可能性の高い住所を複数返します。
+
+検索結果が複数件存在した場合、より可能性の高い住所を複数返します。
 ```php
 //検索結果が複数存在する場合
 $addresses = Dm_Geocoder::geocode('東京都港区芝公園');
@@ -37,8 +39,10 @@ echo count($addresses); // 1
 $addresses = Dm_Geocoder::geocode('ほげほげ');
 echo count($addresses); // 0
 ```
-  - 住所の表記ゆらぎをある程度サポートしていますので、下記例のような検索が可能です。  
-  しかし下記の例に出てこないような検索、例えば「新宿区」を「しんじゅくく」といったものには対応していません。
+
+住所の表記ゆらぎをある程度サポートしていますので、下記例のような検索が可能です。  
+しかし下記の例に出てこないような検索、例えば「新宿区」を「しんじゅくく」といったものには対応していません。
+
 ```php
 //検索文字列の数字表記のゆらぎを吸収しているため、
 //下記の3つはどれも同じ結果を返します
@@ -58,8 +62,10 @@ $addresses = Dm_Geocoder::geocode('塩竈市千賀の台二丁目');
 $addresses = Dm_Geocoder::geocode('愛媛県');
 echo count($addresses); // 2439
 ```
-- 緯度経度から該当する住所を検索する
-  - Dm_Geocoder::reverseGeocode(緯度,軽度)と渡すと、その緯度経度から近い順に住所情報を返します。
+
+#####緯度経度から該当する住所を検索する
+
+Dm_Geocoder::reverseGeocode(緯度,軽度)と渡すと、その緯度経度から近い順に住所情報を返します。
 ```php
 $addresses = Dm_Geocoder::reverseGeocode(39.761437, 140.089602);
 $addresses[0]->prefectureName; // 秋田県
@@ -74,7 +80,8 @@ $addresses[3]->localName; // 将軍野東四丁目
 $addresses = Dm_Geocoder::reverseGeocode(10.0, 100.0);
 $this->assertEquals(count($addresses), 0);
 ```
-  - 第三引数に検索結果
+
+第三引数に検索結果
 ```php
 //第三引数に渡した数分の住所を返します
 $addresses = Dm_Geocoder::reverseGeocode(35.6882074,139.7001416, 3);
@@ -85,7 +92,7 @@ echo count($addresses); // 10
 ```
 
 
-###特徴
+##特徴
 
 - PHP5.0以上向け。PHP5.3以下でも使えるようにnamespaceは使用していません
 - 配置するだけで利用可能（DBを使っていない為特にライブラリを利用するための準備、サーバー設定は不要）
@@ -94,12 +101,13 @@ echo count($addresses); // 10
 - 日本国内のみに対応して
 - 緯度経度は世界測地系
 
-###include/reqiure方法
+##include/reqiure方法
 
 下記の方法でライブラリを読み込んでください。
 読み込んだ後は
 
-- composerを利用する場合  
+#####composerを利用する場合  
+
 下記のcomposer.jsonを書いてinstallしてください。
 ```javascript
 {
@@ -108,7 +116,9 @@ echo count($addresses); // 10
     }
 }
 ```
-- 手動でファイルをreqireする場合
+
+#####手動でファイルをreqireする場合
+
 ```php
 //autoloaderを使わず、Classファイルを手動で読み込む場合は下記ファイルをすべて読み込んでください
 $LIB_DIR = realpath(dirname(__FILE__).'/../src/').'/';
@@ -122,6 +132,6 @@ require_once $LIB_DIR.'Dm/Geocoder/GISCSV/Reader.php';
 ```
 
 
-###注意点
+##注意点
 
 - UTF-8以外はサポートしません。mb_internal_encoding('UTF-8');をしてください。
