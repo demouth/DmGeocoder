@@ -1,0 +1,22 @@
+{
+    "name": "demouth/dmgeocoder",
+    "type": "library",
+    "description": "Geocoding library.",
+    "keywords": ["geocoding","geocoder"],
+    "homepage": "https://github.com/demouth/DmGeocoder",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "demouth",
+            "homepage": "http://demouth.net/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.0"
+    },
+    "autoload": {
+        "psr-0": { "Dm": "src/" }
+    }
+}
