@@ -3,16 +3,29 @@
 PHP製のジオコーディングライブラリです。  
 住所から緯度経度を調べたり（ジオコーディング）、緯度経度から住所を調べたりすること（逆ジオコーディング）が可能です。
 
+##特徴
+
+- 配置するだけで利用可能です（DBを使っていない為特にライブラリを利用するための準備、サーバー設定は不要）
+- GoogleGeocordingAPIのような外部APIを利用せず、地理情報をライブラリ内に持っている為、回数制限など気にせず使えます
+- 丁番号程度の多少の表記の揺らぎについては対応しています
+- 日本国内のみに対応していて、例えば国外のジオコーディングは出来ません
+- 緯度経度は世界測地系です
+- PHP5.0以上で利用可能で、PHP5.3以下でも使えるようにnamespaceは使用していません
+
 ##使い方
 
-#####住所名から緯度経度を取得する
+###住所名から緯度経度を取得する
 
 住所文字列をDm_Geocoder::geocode()の第一引数に渡すと、引数を元にもっとも一致する住所検索を行い、詳細な住所情報を返します。
+この住所情報には緯度経度情報を含みます。
+
 ```php
 $addresses = Dm_Geocoder::geocode('沖縄県八重山郡与那国町与那国');
+
 echo count($addresses); // 1 (この場合は1)
 $address = $addresses[0];
 echo get_class($address); // Dm_Geocoder_Address
+
 echo $address->lat; // 24.468119 (緯度)
 echo $address->lng; // 123.004341 (経度)
 echo $address->prefectureName; // 沖縄県 (都道府県名)
@@ -32,9 +45,11 @@ echo $addresses[0]->localName; // 芝公園一丁目
 echo $addresses[1]->localName; // 芝公園二丁目
 echo $addresses[2]->localName; // 芝公園三丁目
 echo $addresses[3]->localName; // 芝公園四丁目
+
 //住所の絞り込みが十分で、検索結果が1つまで絞りこまれている場合
 $addresses = Dm_Geocoder::geocode('東京都港区芝公園一丁目');
 echo count($addresses); // 1
+
 //存在しない住所名での検索で、マッチする検索結果が1件も存在しない場合
 $addresses = Dm_Geocoder::geocode('ほげほげ');
 echo count($addresses); // 0
@@ -49,21 +64,24 @@ echo count($addresses); // 0
 $addresses = Dm_Geocoder::geocode('北海道札幌市中央区大通西17丁目');
 $addresses = Dm_Geocoder::geocode('北海道札幌市中央区大通西１７丁目');
 $addresses = Dm_Geocoder::geocode('北海道札幌市中央区大通西十七丁目');
+
 //郵便番号が含まれていたり、大字町丁目以降の住所が含まれていても検索可能です
 //この場合郵便番号と大字町丁目以降の住所は無視されます
 //例： 中華Dining 東海飯店 大門本店 http://r.gnavi.co.jp/a136700/map/
 $addresses = Dm_Geocoder::geocode('〒105-0012 東京都港区芝大門2-4-18');
 echo $addresses[0]->localName; // 芝大門二丁目
+
 //県名の省略も可能です
 //ただしこの場合、多少検索処理に時間がかかります
 $addresses = Dm_Geocoder::geocode('塩竈市千賀の台二丁目');
+
 //県名だけの検索も可能です
 //この場合、この県に所属する「大字町丁目」分の結果が返ります
 $addresses = Dm_Geocoder::geocode('愛媛県');
 echo count($addresses); // 2439
 ```
 
-#####緯度経度から該当する住所を検索する
+###緯度経度から該当する住所を検索する
 
 Dm_Geocoder::reverseGeocode(緯度,軽度)と渡すと、その緯度経度から近い順に住所情報を返します。
 ```php
@@ -76,6 +94,7 @@ $addresses[2]->localName; // 寺内字通穴
 $addresses[3]->localName; // 将軍野東四丁目
     :
     :
+
 //該当する住所が日本国内に存在しな場合は結果を返しません
 $addresses = Dm_Geocoder::reverseGeocode(10.0, 100.0);
 $this->assertEquals(count($addresses), 0);
@@ -86,27 +105,18 @@ $this->assertEquals(count($addresses), 0);
 //第三引数に渡した数分の住所を返します
 $addresses = Dm_Geocoder::reverseGeocode(35.6882074,139.7001416, 3);
 echo count($addresses); // 3
+
 //第三引数を省略した場合、デフォルトで10件返します
 $addresses = Dm_Geocoder::reverseGeocode(35.6882074,139.7001416);
 echo count($addresses); // 10
 ```
 
-
-##特徴
-
-- PHP5.0以上向け。PHP5.3以下でも使えるようにnamespaceは使用していません
-- 配置するだけで利用可能（DBを使っていない為特にライブラリを利用するための準備、サーバー設定は不要）
-- GoogleGeocordingAPIのような外部APIを利用せず、地理情報をライブラリ内に持っている為、回数制限など気にせず使える
-- 丁番号程度の多少の表記の揺らぎについては対応している
-- 日本国内のみに対応して
-- 緯度経度は世界測地系
-
 ##include/reqiure方法
 
-下記の方法でライブラリを読み込んでください。
-読み込んだ後は
+下記の方法でライブラリを読み込んでください。  
+読み込み後はクラスを使える状態になっています。
 
-#####composerを利用する場合  
+####composerを利用する場合  
 
 下記のcomposer.jsonを書いてinstallしてください。
 ```javascript
@@ -117,7 +127,7 @@ echo count($addresses); // 10
 }
 ```
 
-#####手動でファイルをreqireする場合
+####手動でファイルをreqireする場合
 
 ```php
 //autoloaderを使わず、Classファイルを手動で読み込む場合は下記ファイルをすべて読み込んでください
