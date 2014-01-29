@@ -5,12 +5,12 @@ PHP製のジオコーディングライブラリです。
 
 ##特徴
 
-- 配置するだけで利用可能です（DBを使っていない為特にライブラリを利用するための準備、サーバー設定は不要）
-- GoogleGeocordingAPIのような外部APIを利用せず、地理情報をライブラリ内に持っている為、回数制限など気にせず使えます
-- 丁番号程度の多少の表記の揺らぎについては対応しています
-- 日本国内のみに対応していて、例えば国外のジオコーディングは出来ません
-- 緯度経度は世界測地系です
-- PHP5.0以上で利用可能で、PHP5.3以下でも使えるようにnamespaceは使用していません
+- 一般的にプログラムからジオコーディングをする時、Google Geocording APIのようなジオコーディングAPIを利用しますが、当ライブラリは地理情報をライブラリ内に持ちジオコーディングAPIを利用しません。これによりジオコーディングAPIを利用した実装とは違い、回数制限など気にせず利用することが可能です。
+- 配置するだけで利用可能です（ジオコーディングAPIやDBを使っていない為特にライブラリを利用するための準備、サーバー設定は不要）。
+- 丁番号程度の多少の表記の揺らぎについては対応しています（詳しくは使い方を参照）。
+- 日本国内のみに対応していて、国外のジオコーディングは出来ません。
+- 緯度経度は世界測地系です。
+- PHP5.0以上で利用可能で、PHP5.3以下でも使えるようにnamespaceは使用していません。
 
 ##使い方
 
@@ -24,8 +24,8 @@ $addresses = Dm_Geocoder::geocode('沖縄県八重山郡与那国町与那国');
 
 echo count($addresses); // 1 (この場合は1)
 $address = $addresses[0];
-echo get_class($address); // Dm_Geocoder_Address
 
+echo get_class($address); // Dm_Geocoder_Address
 echo $address->lat; // 24.468119 (緯度)
 echo $address->lng; // 123.004341 (経度)
 echo $address->prefectureName; // 沖縄県 (都道府県名)
@@ -56,7 +56,7 @@ echo count($addresses); // 0
 ```
 
 住所の表記ゆらぎをある程度サポートしていますので、下記例のような検索が可能です。  
-しかし下記の例に出てこないような検索、例えば「新宿区」を「しんじゅくく」といったものには対応していません。
+ただし下記の例に出てこないような検索、例えば「新宿区」を「しんじゅくく」といったものには対応していません。
 
 ```php
 //検索文字列の数字表記のゆらぎを吸収しているため、
@@ -65,7 +65,8 @@ $addresses = Dm_Geocoder::geocode('北海道札幌市中央区大通西17丁目'
 $addresses = Dm_Geocoder::geocode('北海道札幌市中央区大通西１７丁目');
 $addresses = Dm_Geocoder::geocode('北海道札幌市中央区大通西十七丁目');
 
-//郵便番号が含まれていたり、大字町丁目以降の住所が含まれていても検索可能です
+//郵便番号が含まれていたり、スペースが含まれていたり、
+//大字町丁目以降の住所が含まれていても検索可能です
 //この場合郵便番号と大字町丁目以降の住所は無視されます
 //例： 中華Dining 東海飯店 大門本店 http://r.gnavi.co.jp/a136700/map/
 $addresses = Dm_Geocoder::geocode('〒105-0012 東京都港区芝大門2-4-18');
@@ -83,7 +84,7 @@ echo count($addresses); // 2439
 
 ###緯度経度から該当する住所を検索する
 
-Dm_Geocoder::reverseGeocode(緯度,軽度)と渡すと、その緯度経度から近い順に住所情報を返します。
+Dm_Geocoder::reverseGeocode(緯度,軽度)と渡すと、その緯度経度から近い順に住所情報を複数返します。
 ```php
 $addresses = Dm_Geocoder::reverseGeocode(39.761437, 140.089602);
 $addresses[0]->prefectureName; // 秋田県
@@ -97,10 +98,10 @@ $addresses[3]->localName; // 将軍野東四丁目
 
 //該当する住所が日本国内に存在しな場合は結果を返しません
 $addresses = Dm_Geocoder::reverseGeocode(10.0, 100.0);
-$this->assertEquals(count($addresses), 0);
+echo count($addresses); // 0
 ```
 
-第三引数に検索結果
+第三引数に検索結果の返却数を指定できます
 ```php
 //第三引数に渡した数分の住所を返します
 $addresses = Dm_Geocoder::reverseGeocode(35.6882074,139.7001416, 3);
@@ -113,8 +114,8 @@ echo count($addresses); // 10
 
 ##include/reqiure方法
 
-下記の方法でライブラリを読み込んでください。  
-読み込み後はクラスを使える状態になっています。
+下記のいずれかの方法でライブラリを読み込んでください。  
+読み込みができていればクラスを使える状態になっています。
 
 ####composerを利用する場合  
 
@@ -144,4 +145,4 @@ require_once $LIB_DIR.'Dm/Geocoder/GISCSV/Reader.php';
 
 ##注意点
 
-- UTF-8以外はサポートしません。mb_internal_encoding('UTF-8');をしてください。
+- UTF-8以外はサポートしません。mb_internal_encoding('UTF-8');にした状態で、検索文字列にはUTF-8の文字列を渡してください。検索結果もUTF-8で返します。
