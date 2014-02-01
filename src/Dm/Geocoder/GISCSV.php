@@ -14,7 +14,9 @@
  * Dm_Geocoder_GISCSV
  * 
  * csvファイルのアクセサ
+ * 大字・町丁目レベルのCSVを返す
  * 
+ * @see http://nlftp.mlit.go.jp/isj/
  * @author demouth.net
  */
 class Dm_Geocoder_GISCSV
@@ -25,6 +27,13 @@ class Dm_Geocoder_GISCSV
 	 * @var string
 	 */
 	protected $prefectureCode;
+	
+	/**
+	 * csvファイルの対象年度
+	 * @example 2012
+	 * @var int
+	 */
+	public static $year = 2012;
 	
 	/**
 	 * コンストラクタ
@@ -62,7 +71,10 @@ class Dm_Geocoder_GISCSV
 	protected static function buildCsvFilePath($prefectureCode)
 	{
 		$DS = DIRECTORY_SEPARATOR;
-		$path = __DIR__.$DS.'GISCSV'.$DS.'csv'.$DS.$prefectureCode.'_2012.csv';
+		$path = __DIR__
+			.$DS.'GISCSV'
+			.$DS.'csv'
+			.$DS.$prefectureCode.'_'.self::$year.'.csv';
 		return $path;
 	}
 	
