@@ -8,5 +8,6 @@ mb_internal_encoding('UTF-8');
 //composerを使ってinstallした場合はautoload.phpをrequireしてください
 require_once realpath(__DIR__.'/../vendor/autoload.php');
 
-$addresses = Dm_Geocoder::reverseGeocode(35.6882074,139.7001416, 3);
+//逆ジオコーディング
+$addresses = Dm_Geocoder::reverseGeocode(35.6882074,139.7001416);
 var_dump($result);
