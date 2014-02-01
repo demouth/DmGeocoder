@@ -131,7 +131,7 @@ echo count($addresses); // 10
 }
 ```
 
-####手動でファイルをreqireする場合
+####手動でファイルをrequireする場合
 
 ```php
 //autoloaderを使わず、Classファイルを手動で読み込む場合は下記ファイルをすべて読み込んでください
