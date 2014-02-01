@@ -125,8 +125,8 @@ echo count($addresses); // 10
 下記のcomposer.jsonを書いてinstallしてください。
 ```javascript
 {
-    "require-dev": {
-        "demouth/dmimage": "dev-master"
+    "require": {
+        "demouth/dmgeocoder": "1.0.0"
     }
 }
 ```
