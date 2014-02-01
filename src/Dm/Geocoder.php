@@ -186,47 +186,6 @@ class Dm_Geocoder
 	}
 	
 	/**
-	 * mb_splitのマルチバイト対応版
-	 * @param string $string
-	 * @return string 
-	 * @see http://php.benscom.com/manual/ja/function.mb-split.php
-	 *//*
-	protected static function mb_str_split($string)
-	{
-		# Split at all position not after the start: ^ 
-		# and not before the end: $ 
-		return preg_split('/(?<!^)(?!$)/u', $string ); 
-	}*/
-	
-	/**
-	 * $aと$bが前方から何文字目まで一致したかを返す
-	 * 
-	 * @param string $a
-	 * @param string $b
-	 * @return int 一致した文字数を返す。1文字も一致しなければ0、例えば1文字目まで一致なら1を返す。
-	 */
-	 /*
-	protected static function forwardMatchesLength($a,$b)
-	{
-		
-		$a = self::mb_str_split($a);
-		$b = self::mb_str_split($b);
-		
-		$matcheLength = 0;
-		
-		foreach($a as $ak=>$av){
-			if(!isset($b[$ak])){
-				break;
-			}else if($a[$ak] === $b[$ak]){
-				$matcheLength++;
-			}else{
-				break;
-			}
-		}
-		return $matcheLength;
-	}*/
-	
-	/**
 	 * //GPSなどの緯度経度の２点間の直線距離を求める（世界測地系）
 	 * 
 	 * //$lat1, $lon1 --- A地点の緯度経度

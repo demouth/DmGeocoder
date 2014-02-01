@@ -13,7 +13,7 @@
 /**
  * Dm_Geocoder_GISCSV_Finder
  * 
- * 
+ * csvを検索文字列で検索し、検索結果としてマッチする候補を複数返す
  * 
  * @author demouth.net
  */
@@ -104,61 +104,6 @@ class Dm_Geocoder_GISCSV_Finder
 		return $addressMatchedMost;
 		
 	}
-	
-	/*
-	リファクタリング前
-	
-	public static function _find($address)
-	{
-		
-		if(!is_string($address)) return array();
-		
-		$query = new Dm_Geocoder_Query($address);
-		
-		// 都道府県を特定できていれば絞り込む
-		$prefectures = array();
-		if($query->prefectureCode){
-			$prefectures[] = $query->prefectureCode;
-		}else{
-			$prefectures = array_keys(Dm_Geocoder_Prefecture::get());
-		}
-		
-		$addressMatchedMost = array();
-		$addressMatchedMostLength = 0;
-		
-		//都道府県のCSV毎ループ
-		foreach ($prefectures as $prefecture) {
-			
-			$reader = new Dm_Geocoder_GISCSV_Reader($prefecture);
-			
-			// CSVの１行毎にループ
-			// $rowはDm_Geocoder_Addressオブジェクト
-			foreach($reader as $key => $row){
-				
-				//検索クエリに県名が含まれているなら県名もマッチング対象とする
-				$matchingName = $query->prefectureCode ? $row->prefectureName : '';
-				//市区町村と
-				$matchingName .= $row->municipalityName.$row->localName;
-				
-				$matchesLength = self::forwardMatchesLength(
-					$matchingName,
-					$query->address
-				);
-				
-				if($matchesLength===0) continue;
-				
-				if($matchesLength > $addressMatchedMostLength){
-					$addressMatchedMostLength = $matchesLength;
-					$addressMatchedMost = array($row);
-				}else if($matchesLength === $addressMatchedMostLength){
-					$addressMatchedMost[] = $row;
-				}
-			}
-		}
-		
-		return $addressMatchedMost;
-	}
-	*/
 	
 	/**
 	 * $aと$bが前方から何文字目まで一致したかを返す
