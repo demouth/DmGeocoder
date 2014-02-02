@@ -1,5 +1,9 @@
 #DmGeocorder
 
+[![License](https://poser.pugx.org/demouth/dmgeocoder/license.png)](https://packagist.org/packages/demouth/dmgeocoder)
+[![Latest Stable Version](https://poser.pugx.org/demouth/dmgeocoder/v/stable.png)](https://packagist.org/packages/demouth/dmgeocoder) 
+[![Latest Unstable Version](https://poser.pugx.org/demouth/dmgeocoder/v/unstable.png)](https://packagist.org/packages/demouth/dmgeocoder)
+
 PHP製の日本国内用ジオコーディングライブラリです。  
 住所から緯度経度を調べたり（ジオコーディング）、緯度経度から住所を調べたりすること（逆ジオコーディング）が可能です。
 
@@ -16,7 +20,7 @@ PHP製の日本国内用ジオコーディングライブラリです。
 
 ##使い方
 
-###住所名から緯度経度を取得する
+####使い方１　住所名から緯度経度を取得する
 
 住所文字列をDm_Geocoder::geocode()の第一引数に渡すと、引数を元に住所検索を行い、詳細な住所情報を返します。
 この住所情報には緯度経度情報を含みます。  
@@ -85,7 +89,7 @@ $addresses = Dm_Geocoder::geocode('愛媛県');
 echo count($addresses); // 2439
 ```
 
-###緯度経度から該当する住所を検索する
+####使い方２　緯度経度から該当する住所を検索する
 
 Dm_Geocoder::reverseGeocode(緯度,軽度)と渡すと、その緯度経度から近い順に住所情報を複数返します。
 ```php
@@ -132,6 +136,8 @@ echo count($addresses); // 10
 ```
 
 ####手動でファイルをrequireする場合
+
+ソースをダウンロードして、下記のようにsrcディレクトリ以下のソースを読み込んでください。
 
 ```php
 //autoloaderを使わず、Classファイルを手動で読み込む場合は下記ファイルをすべて読み込んでください
